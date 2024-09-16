@@ -1,0 +1,26 @@
+stages:
+  - dev
+  - test
+  - main
+before_script:
+    - pwd
+    - hostname
+    - ip a
+    - id
+    - echo $PATH
+dev:
+  stage: dev
+  tags:
+    - pc28-web
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - echo "===========deploy to dev server=================="
+    - nvm use 16
+    - npm install
+    - npm run build
+    - rsync -av -e 'ssh -p 22'  --delete ./dist ec2-user@13.229.136.128:/home/wwwroot/h5
+    - curl -X POST "https://api.telegram.org/bot6167216779:AAGW7t0tkEKNFgAL9Q7hXe_tn7T2DZ03N1w/sendMessage" -d "chat_id=-981388538&&text=pc28-web h5 dev 分支 开发环境已更新   '触发者':$GITLAB_USER_NAME      '提交信息':$CI_COMMIT_MESSAGE"
+  only:
+    refs:
+      - dev
