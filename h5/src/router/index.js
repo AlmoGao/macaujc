@@ -14,6 +14,11 @@ const routes = [
         name: 'home',
         component: () => import('../views/Home/Home.vue')
       },
+      { // 挑码助手
+        path: '/picker',
+        name: 'picker',
+        component: () => import('../views/Home/Picker.vue')
+      },
     ]
   },
   { // 登录
