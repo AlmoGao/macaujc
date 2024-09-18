@@ -14,10 +14,20 @@ const routes = [
         name: 'home',
         component: () => import('../views/Home/Home.vue')
       },
+      { // 记录
+        path: '/history',
+        name: 'history',
+        component: () => import('../views/Home/History.vue')
+      },
       { // 挑码助手
         path: '/picker',
         name: 'picker',
         component: () => import('../views/Home/Picker.vue')
+      },
+      { // 联系我们
+        path: '/us',
+        name: 'us',
+        component: () => import('../views/Home/Us.vue')
       },
     ]
   },

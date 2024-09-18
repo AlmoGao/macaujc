@@ -53,9 +53,7 @@ body {
   width: 100%;
   margin: 0 auto;
   max-width: 1200px;
-  height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 
 div {

@@ -23,7 +23,7 @@
             </svg>
             <span>首页</span>
         </div>
-        <div class="nav">
+        <div class="nav" @click="jump('history')">
             <svg class="svg" width="52px" height="52px" viewBox="0 0 140 140" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
@@ -95,7 +95,7 @@
             </svg>
             <span>挑码助手</span>
         </div>
-        <div class="nav">
+        <div class="nav" @click="jump('us')">
             <svg class="svg" width="52px" height="52px" viewBox="0 0 140 140" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
@@ -190,6 +190,8 @@ const jump = name => {
         bottom: 0;
         left: 0;
         width: 100%;
+        background-color: #fff;
+        z-index: 9;
 
         .nav {
             font-size: 13px;

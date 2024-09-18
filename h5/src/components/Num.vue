@@ -74,13 +74,21 @@ const numMap = ref({
 <style lang="less" scoped>
 .num {
     background-size: 100% 100%;
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #111;
     font-weight: bold;
-    font-size: 2rem;
+    font-size: 2.6rem;
+}
+
+@media screen and (max-width: 600px) {
+    .num {
+        width: 8rem;
+        height: 8rem;
+        font-size: 4rem;
+    }
 }
 </style>

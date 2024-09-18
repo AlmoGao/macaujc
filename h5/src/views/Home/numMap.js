@@ -21,3 +21,21 @@ export const numAniMap = {
     tu: [2, 14, 26, 38], // 兔
     hu: [3, 15, 27, 39], // 虎
 }
+
+// 获取号码的生肖文本
+export const getAniText = num => {
+    num = Number(num)
+    if (numAniMap.shu.includes(num)) return '鼠'
+    if (numAniMap.zhu.includes(num)) return '猪'
+    if (numAniMap.gou.includes(num)) return '狗'
+    if (numAniMap.ji.includes(num)) return '鸡'
+    if (numAniMap.hou.includes(num)) return '猴'
+    if (numAniMap.niu.includes(num)) return '牛'
+    if (numAniMap.yang.includes(num)) return '羊'
+    if (numAniMap.ma.includes(num)) return '马'
+    if (numAniMap.she.includes(num)) return '蛇'
+    if (numAniMap.long.includes(num)) return '龙'
+    if (numAniMap.tu.includes(num)) return '兔'
+    if (numAniMap.hu.includes(num)) return '虎'
+    return ''
+}
