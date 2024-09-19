@@ -7,6 +7,18 @@ class HttpService {
       method: "get",
     });
   }
+  _platAll() {
+    // 平台彩
+    return http("/api/platAll", {
+      method: "get",
+    });
+  }
+  _plat() {
+    // 平台彩
+    return http("/api/plat", {
+      method: "get",
+    });
+  }
   _macaujc2() {
     // 新澳门六合彩-当前
     return http("/api/macaujc2", {
@@ -63,6 +75,14 @@ class HttpService {
       data,
     });
   }
+  _updatePlat(data) {
+    // 修改号码
+    return http("/api/updatePlat", {
+      method: "post",
+      data,
+    });
+  }
+
 
 }
 

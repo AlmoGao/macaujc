@@ -16,9 +16,10 @@ import requests
 import schedule
 import time
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import asyncio
 import threading
+import random
 
 # 配置
 SECRET_KEY = "macaujc"
@@ -61,6 +62,12 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         key TEXT NOT NULL UNIQUE,
         val TEXT NOT NULL
+    )''')
+    conn.execute('''CREATE TABLE IF NOT EXISTS plat (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        expect TEXT NOT NULL UNIQUE,
+        openCode TEXT NOT NULL,
+        openTime TEXT NOT NULL
     )''')
     conn.commit()
     conn.close()
@@ -272,6 +279,7 @@ class LivesModel(BaseModel):
     key: str
     value: str
 
+
 # 修改直播地址
 @app.post("/api/updateLives")
 async def updateLives(updateData: LivesModel, token: str = Depends(oauth2_scheme)):
@@ -407,7 +415,76 @@ async def get_macaujc3his():
         return None
 
 
+# 获取平台彩
+# 获取所有数据
+@app.get("/api/platAll")
+async def get_platAll():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT * FROM plat ORDER BY openTime DESC
+    ''')
+    rows = cursor.fetchall()
+    result = [dict(row) for row in rows]
+    conn.close()
+    return result
 
+# 获取当前时间之前的所有数据
+@app.get("/api/plat")
+async def get_plat():
+    # 获取当前时间
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # 连接数据库
+    conn = get_db()
+    cursor = conn.cursor()
+    # 查询 openTime 小于当前时间的所有记录
+    cursor.execute('''
+        SELECT * FROM plat WHERE openTime < ?
+        ORDER BY openTime DESC
+    ''', (current_time,))
+    # 获取所有结果
+    rows = cursor.fetchall()
+    # 将结果转换为列表格式
+    result = [dict(row) for row in rows]
+    # 关闭数据库连接
+    conn.close()
+    return result
+
+
+# 定义请求体模型
+class PlatUpdateRequest(BaseModel):
+    expect: str
+    openCode: str
+# 更新 plat 表中 openCode 的接口
+@app.post("/api/updatePlat")
+async def update_plat(request: PlatUpdateRequest, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    # 查找 expect 对应的记录
+    cursor.execute('''
+        SELECT * FROM plat WHERE expect = ?
+    ''', (request.expect,))
+    record = cursor.fetchone()
+    if record is None:
+        conn.close()
+        raise HTTPException(status_code=404, detail="Record not found")
+
+    # 更新 openCode
+    cursor.execute('''
+        UPDATE plat SET openCode = ? WHERE expect = ?
+    ''', (request.openCode, request.expect))
+
+    conn.commit()  # 提交更改
+    conn.close()  # 关闭连接
+
+    return {"message": "openCode updated successfully"}
 
 # 定义每半小时运行一次的任务
 schedule.every(30).minutes.do(fetch_data)
@@ -422,8 +499,6 @@ async def run_schedule():
 async def startup():
     init_db()
     # 启动定时任务
-    
-    # fetch_data()
     # asyncio.create_task(fetch_data3())
     # 异步任务启动调度器
     # asyncio.create_task(run_schedule())

@@ -102,10 +102,12 @@ getData()
                 justify-content: center;
                 border-bottom: 1px solid #e5e5e5;
                 border-right: 1px solid #e5e5e5;
+                word-break: break-all;
 
                 .btn {
                     cursor: pointer;
                     color: green;
+                    user-select: none;
                 }
             }
 

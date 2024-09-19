@@ -4,7 +4,7 @@
 
         <div class="header">
             <span>欢迎您：{{ userInfo.username }}</span>
-            <span class="btn">退出</span>
+            <span class="btn" @click="loginout">退出</span>
         </div>
         <div class="content">
             <div class="left">
@@ -24,6 +24,22 @@ import { ref, computed } from "vue"
 import store from "@/store"
 import router from "@/router";
 import { useRoute } from "vue-router"
+import { showConfirmDialog } from "vant"
+
+const loginout = () => {
+    showConfirmDialog({
+        title: '退出',
+        message:
+            '是否退出登录？',
+    })
+        .then(() => {
+            store.commit('setToken', '')
+            router.replace({
+                name: 'alogin'
+            })
+        })
+        .catch(() => { });
+}
 
 const route = useRoute()
 const token = computed(() => store.state.token || '')
@@ -52,6 +68,7 @@ if (!token.value) {
 .page-admin-manager {
     width: 100%;
     height: 100%;
+    background-color: #f5f5f5;
 
     .header {
         width: 100%;
@@ -61,6 +78,11 @@ if (!token.value) {
         align-items: center;
         justify-content: space-between;
         padding: 0 24px;
+
+        .btn {
+            cursor: pointer;
+            user-select: none;
+        }
     }
 
     .content {
@@ -73,11 +95,13 @@ if (!token.value) {
             width: 200px;
             border-right: 1px solid #ddd;
             padding: 40px 10px 40px 20px;
+            user-select: none;
 
             .link {
                 font-size: 18px;
                 margin-bottom: 18px;
                 cursor: pointer;
+
 
                 &:hover {
                     color: #999;

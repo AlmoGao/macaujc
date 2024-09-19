@@ -7,6 +7,7 @@ export default createStore({
   state: {
     token: '',
     userInfo: {},
+    lives: [],
     // 新澳门
     macaujc2: {},
     macaujc2his: [],
@@ -16,6 +17,9 @@ export default createStore({
     // 3分
     macaujc3: {},
     macaujc3his: [],
+    // 平台彩
+    plat: {},
+    platHis: [],
   },
   mutations: {
     setToken(state, val) {
@@ -23,6 +27,9 @@ export default createStore({
     },
     setUserInfo(state, val) {
       state.userInfo = val
+    },
+    setLives(state, val) {
+      state.lives = val
     },
     setMacaujc2(state, val) {
       state.macaujc2 = val
@@ -42,11 +49,21 @@ export default createStore({
     setMacaujc3his(state, val) {
       state.macaujc3his = val
     },
+    setPlat(state, val) {
+      state.platHis = val
+      state.plat = val[0]
+    },
   },
   actions: {
     updateUser({ commit }) {
       api.userConfig().then(res => {
         commit('setUserInfo', res.welcome)
+      })
+    },
+    updateLives({ commit }) {
+      api._lives().then(res => {
+        console.error('???', res)
+        commit('setLives', res)
       })
     },
     updateMacaujc2({ commit }) { // 新澳门
@@ -82,6 +99,13 @@ export default createStore({
       api._macaujc3his().then(res => {
         if (res && res.data) {
           commit('setMacaujc3his', res.data)
+        }
+      })
+    },
+    updatePlat({ commit }) { // 平台彩
+      api._plat().then(res => {
+        if (res) {
+          commit('setPlat', res)
         }
       })
     },
