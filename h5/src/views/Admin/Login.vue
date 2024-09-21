@@ -103,7 +103,7 @@ const login = () => {
         }
 
         .code {
-            height: 100%;
+            height: 50px;
             width: auto;
             cursor: pointer;
         }

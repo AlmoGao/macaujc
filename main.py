@@ -88,7 +88,7 @@ captcha_storage: Dict[str, str] = {}
 
 def generate_captcha() -> (str, bytes):
     # 定义图片大小
-    width, height = 150, 60  # 可以根据需要调整图片的大小
+    width, height = 50, 20  # 可以根据需要调整图片的大小
     image = Image.new('RGB', (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(image)
 
@@ -96,8 +96,7 @@ def generate_captcha() -> (str, bytes):
     captcha_text = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
 
     # 设置字体大小
-    font_size = int(height * 0.6)  # 字体大小接近图片高度的 80%
-    font = ImageFont.truetype("arial.ttf", font_size)  # 使用系统字体或自定义字体
+    font = ImageFont.load_default()  # 使用系统字体或自定义字体
 
     # 计算文本的边界框（更精准地获取文本尺寸）
     bbox = draw.textbbox((0, 0), captcha_text, font=font)
