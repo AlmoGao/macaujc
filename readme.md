@@ -1,11 +1,11 @@
 
 
 安装
-pip install fastapi uvicorn python-jose[cryptography] pillow requests schedule
+pip install fastapi uvicorn python-jose[cryptography] pillow requests schedule gunicorn
 
 
 启动
-python -m uvicorn app:app --reload
+python -m uvicorn main:app --reload
 
 
 数据库

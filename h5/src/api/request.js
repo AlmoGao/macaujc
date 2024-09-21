@@ -7,7 +7,7 @@ class Interceptors {
   instance;
   constructor() {
     this.instance = axios.create({
-      baseURL: "http://localhost:8000/",
+      baseURL: "http://93.179.124.189:8000/",
       timeout: 20000,
     });
   }
