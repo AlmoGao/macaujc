@@ -49,7 +49,7 @@ const links = ref([
     { name: '新彩', route: 'aplat' },
     { name: '新澳门六合彩', route: 'an6c' },
     { name: '澳门六合彩', route: 'a6c' },
-    { name: '澳门六合彩3分', route: 'a6c3' },
+    // { name: '澳门六合彩3分', route: 'a6c3' },
 ])
 const jump = item => {
     router.push({

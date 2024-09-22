@@ -234,6 +234,7 @@ const getData = () => {
 getData()
 
 const changeTab = i => {
+    if (i == 3) return showToast('敬请期待')
     active.value = i
     getData()
 }

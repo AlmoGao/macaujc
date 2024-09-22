@@ -61,6 +61,20 @@ class HttpService {
       method: "get",
     });
   }
+  _updateMacaujc2Code(data) {
+    // 登录
+    return http("/api/updateMacaujc2Code", {
+      method: "post",
+      data,
+    });
+  }
+  _updateMacaujcCode(data) {
+    // 登录
+    return http("/api/updateMacaujcCode", {
+      method: "post",
+      data,
+    });
+  }
   _login(data) {
     // 登录
     return http("/api/login", {

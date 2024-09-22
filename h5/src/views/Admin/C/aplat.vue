@@ -14,7 +14,7 @@
                 <div class="td td-2">{{ item.openTime }}</div>
                 <div class="td td-2">{{ item.openCode }}</div>
                 <div class="td">
-                    <span class="btn" @click="openDialog(item)">设置号码</span>
+                    <span class="btn" @click="openDialog(item)">更改号码</span>
                 </div>
             </div>
         </div>

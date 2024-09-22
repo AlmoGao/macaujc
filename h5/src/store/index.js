@@ -62,7 +62,6 @@ export default createStore({
     },
     updateLives({ commit }) {
       api._lives().then(res => {
-        console.error('???', res)
         commit('setLives', res)
       })
     },

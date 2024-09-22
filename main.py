@@ -339,16 +339,51 @@ async def get_macaujc2his():
     # 数据库查找用户
     conn = get_db()
     cursor = conn.cursor()
-
     cursor.execute('SELECT val FROM jsons WHERE key = ?', ('macaujc2his',))
     result = cursor.fetchone()
-
     if result:
         json_data = json.loads(result[0])  # 解析为 JSON 对象
         return json_data
     else:
         return None
 
+# 定义请求体模型
+class CodeUpdateRequest(BaseModel):
+    code: str
+# 手动开奖
+@app.post("/api/updateMacaujc2Code")
+async def updateMacaujc2Code(request: CodeUpdateRequest, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    # 查找 expect 对应的记录
+    cursor.execute('SELECT val FROM jsons WHERE key = ?', ('macaujc2',))
+    result = cursor.fetchone()
+    if result:
+        json_data = json.loads(result[0])  # 解析为 JSON 对象
+    d = json_data[0]
+    open_time = datetime.strptime(d['openTime'], '%Y-%m-%d %H:%M:%S')
+    new_open_time = open_time + timedelta(hours=24)
+    current_time = datetime.now()
+    # 如果当前时间大于 new_open_time，返回异常
+    if current_time < new_open_time:
+        return { "error": "2" }
+    d['openTime'] = new_open_time.strftime('%Y-%m-%d %H:%M:%S')
+    d['expect'] = str(int(d['expect']) + 1)
+    d['openCode'] = request.code
+    # 更新 openCode
+    save_data_to_db('macaujc2', [d])
+    
+    conn.commit()  # 提交更改
+    conn.close()  # 关闭连接
+
+    return {"message": "openCode updated successfully"}
 
 # 获取澳门六合彩
 @app.get("/api/macaujc")
@@ -380,6 +415,40 @@ async def get_macaujchis():
         return json_data
     else:
         return None
+# 手动开奖
+@app.post("/api/updateMacaujcCode")
+async def updateMacaujcCode(request: CodeUpdateRequest, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    # 查找 expect 对应的记录
+    cursor.execute('SELECT val FROM jsons WHERE key = ?', ('macaujc',))
+    result = cursor.fetchone()
+    if result:
+        json_data = json.loads(result[0])  # 解析为 JSON 对象
+    d = json_data[0]
+    open_time = datetime.strptime(d['openTime'], '%Y-%m-%d %H:%M:%S')
+    new_open_time = open_time + timedelta(hours=24)
+    current_time = datetime.now()
+    # 如果当前时间大于 new_open_time，返回异常
+    if current_time < new_open_time:
+        return { "error": "1" }
+    d['openTime'] = new_open_time.strftime('%Y-%m-%d %H:%M:%S')
+    d['expect'] = str(int(d['expect']) + 1)
+    d['openCode'] = request.code
+    # 更新 openCode
+    save_data_to_db('macaujc', [d])
+    
+    conn.commit()  # 提交更改
+    conn.close()  # 关闭连接
+
+    return {"message": "openCode updated successfully"}
 
 
 # 获取澳门六合彩3分
@@ -500,14 +569,16 @@ async def run_schedule():
 @app.on_event("startup")
 async def startup():
     init_db()
-    
+    print('同步数据')
+    fetch_data()
     # 异步任务启动调度器
-    # asyncio.create_task(run_schedule())
+    asyncio.create_task(run_schedule())
     print('-- 启动定时任务 --')
     # 启动时间
     current_time = datetime.now()
     formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
     print("启动时间:", formatted_time)
+    
 
 # 启动服务器
 if __name__ == "__main__":

@@ -19,6 +19,11 @@ const routes = [
         name: 'history',
         component: () => import('../views/Home/History.vue')
       },
+      { // 走势
+        path: '/trend',
+        name: 'trend',
+        component: () => import('../views/Home/Trend.vue')
+      },
       { // 挑码助手
         path: '/picker',
         name: 'picker',

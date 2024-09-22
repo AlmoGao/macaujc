@@ -1,7 +1,10 @@
 <!-- 新澳门六合彩 -->
 <template>
     <div class="bb">
-        <div class="title">新澳门六合彩</div>
+        <div class="title" style="display: flex;align-items: center;justify-content: space-between;">
+            <span>新澳门六合彩</span>
+            <Button type="danger" size="small" @click="openG">手动开奖</Button>
+        </div>
         <div class="table">
             <div class="tr th">
                 <div class="td">期号</div>
@@ -21,9 +24,25 @@
             </div>
         </div>
     </div>
-    <Dialog v-model:show="show" title="直播地址" show-cancel-button @confirm="confirm">
+    <Dialog width="400" v-model:show="show" title="直播地址" show-cancel-button @confirm="confirm">
         <div style="border:1px solid #e5e5e5;margin:20px;">
             <Field v-model="live" label="" placeholder="请输入直播地址" />
+        </div>
+    </Dialog>
+
+    <!-- 手动开奖 -->
+    <Dialog width="600" v-model:show="showG" title="手动开奖" show-cancel-button @confirm="confirmG">
+        <div style="padding: 20px;">
+            <div style="color:brown">开奖后1分钟会同步开奖数据，手动开奖请确认开奖期号</div>
+            <br />
+            <div>即将开奖的期号和时间：</div>
+            <br />
+            <div style="font-size: 18px;"><b>{{ currG.expect * 1 + 1 }}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
+                getOpenTime(currG.openTime) }}</b>
+            </div>
+            <br />
+            <Field style="border:1px solid #e5e5e5;" v-model="openN" label=""
+                placeholder="请输入开奖号码 如：01,02,03,04,05,06,07" />
         </div>
     </Dialog>
 </template>
@@ -31,7 +50,8 @@
 <script setup>
 import api from "@/api"
 import { ref } from "vue"
-import { Dialog, Field, showToast } from 'vant'
+import { Dialog, Field, showToast, Button } from 'vant'
+
 
 const show = ref(false)
 const curr = ref({})
@@ -74,6 +94,62 @@ const getData = () => {
     })
 }
 getData()
+
+
+// 开奖
+const showG = ref(false)
+const currG = ref({})
+const openN = ref('')
+const openG = () => {
+    showG.value = true
+    api._macaujc2().then(res => {
+        console.error(res)
+        if (res && res[0]) {
+            currG.value = res[0]
+        }
+    })
+}
+const arrs = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49']
+const confirmG = () => {
+    // 校验
+    let pass = true
+    let codes = openN.value.split(',')
+    codes = Array.from(new Set(codes))
+    if (codes.length != 7) {
+        pass = false
+    }
+    codes.forEach(item => {
+        if (!arrs.includes(item)) {
+            pass = false
+        }
+    })
+    if (!pass) {
+        showToast('号码异常，请重新设置')
+        return
+    }
+    api._updateMacaujc2Code({ code: openN.value }).then(res => {
+        if (res.error) {
+            showToast('开奖失败')
+        } else {
+            showToast('开奖成功')
+        }
+    })
+}
+const getOpenTime = t => {
+    let date = new Date(t);
+    date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    // 获取各个时间部分
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，所以加1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    // 返回格式化后的日期字符串
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 </script>
 
 <style lang="less" scoped>

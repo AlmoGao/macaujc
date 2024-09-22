@@ -50,7 +50,7 @@
             <span>开奖公告</span>
         </div>
         <!-- <div class="nav">开奖视频</div> -->
-        <div class="nav">
+        <div class="nav" @click="jump('trend')">
             <svg class="svg" width="52px" height="52px" viewBox="0 0 140 140" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
