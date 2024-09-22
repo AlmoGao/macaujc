@@ -7,6 +7,9 @@ import store from "./store";
 import http from "@/api"
 import { onMounted } from "vue"
 
+store.dispatch('updateMacaujc2')
+store.dispatch('updateMacaujc')
+store.dispatch('updatePlat')
 
 // 动态调整字体大小以响应窗口大小
 let timeout = null
