@@ -1,7 +1,7 @@
-<!-- 平台彩 -->
+<!-- 新彩 -->
 <template>
     <div class="bb">
-        <div class="title">平台彩</div>
+        <div class="title">新彩</div>
         <div class="table">
             <div class="tr th">
                 <div class="td">期号</div>
@@ -33,6 +33,7 @@ import { ref } from "vue"
 import { Dialog, Field, showToast } from 'vant'
 
 const d = ref(new Date())
+const arrs = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49']
 
 const show = ref(false)
 const curr = ref({})
@@ -43,6 +44,22 @@ const openDialog = (item) => {
     show.value = true
 }
 const confirm = () => {
+    // 校验
+    let pass = true
+    let codes = code.value.split(',')
+    codes = Array.from(new Set(codes))
+    if (codes.length != 7) {
+        pass = false
+    }
+    codes.forEach(item => {
+        if (!arrs.includes(item)) {
+            pass = false
+        }
+    })
+    if (!pass) {
+        showToast('号码异常，请重新设置')
+        return
+    }
     api._updatePlat({
         expect: curr.value.expect,
         openCode: code.value

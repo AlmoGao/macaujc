@@ -113,8 +113,8 @@ const active = ref(1)
 const nameMap = ref({
     1: '新澳门六合彩',
     2: '澳门六合彩',
-    3: '澳门六合彩3分',
-    4: '平台彩',
+    3: '香港六合彩',
+    4: '新彩',
 })
 
 const getOpenTime = t => {

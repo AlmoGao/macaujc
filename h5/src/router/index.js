@@ -42,7 +42,7 @@ const routes = [
     redirect: '/aplat',
     component: () => import('../views/Admin/Manager.vue'),
     children: [
-      { // 平台彩
+      { // 新彩
         path: '/aplat',
         name: 'aplat',
         component: () => import('../views/Admin/C/aplat.vue')

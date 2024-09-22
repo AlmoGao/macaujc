@@ -8,13 +8,13 @@ class HttpService {
     });
   }
   _platAll() {
-    // 平台彩
+    // 新彩
     return http("/api/platAll", {
       method: "get",
     });
   }
   _plat() {
-    // 平台彩
+    // 新彩
     return http("/api/plat", {
       method: "get",
     });

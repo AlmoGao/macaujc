@@ -414,7 +414,7 @@ async def get_macaujc3his():
         return None
 
 
-# 获取平台彩
+# 获取新彩
 # 获取所有数据
 @app.get("/api/platAll")
 async def get_platAll():
@@ -485,8 +485,11 @@ async def update_plat(request: PlatUpdateRequest, token: str = Depends(oauth2_sc
 
     return {"message": "openCode updated successfully"}
 
-# 定义每半小时运行一次的任务
-schedule.every(30).minutes.do(fetch_data)
+
+# 使用 schedule 定义每天的 21:33:00 和 22:33:00 执行任务
+schedule.every().day.at("21:33:00").do(fetch_data)
+schedule.every().day.at("22:33:00").do(fetch_data)
+
 # 调度任务运行的函数
 async def run_schedule():
     while True:
@@ -497,11 +500,14 @@ async def run_schedule():
 @app.on_event("startup")
 async def startup():
     init_db()
-    # 启动定时任务
-    # asyncio.create_task(fetch_data3())
+    
     # 异步任务启动调度器
     # asyncio.create_task(run_schedule())
     print('-- 启动定时任务 --')
+    # 启动时间
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+    print("启动时间:", formatted_time)
 
 # 启动服务器
 if __name__ == "__main__":
