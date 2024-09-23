@@ -65,13 +65,4 @@ api._cheats().then(res => {
         }
     }
 }
-
-.html {
-    min-height: 30vh;
-    overflow-y: auto;
-
-    img {
-        max-width: 100% !important;
-    }
-}
 </style>

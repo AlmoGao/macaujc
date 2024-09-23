@@ -8,8 +8,13 @@ import http from "@/api"
 import { onMounted } from "vue"
 
 store.dispatch('updateMacaujc2')
-store.dispatch('updateMacaujc')
+// store.dispatch('updateMacaujc')
 store.dispatch('updatePlat')
+setTimeout(() => {
+  http._cheats().then(res => {
+    store.commit('setCheats', (res || []).reverse())
+  })
+}, 2000)
 
 // 动态调整字体大小以响应窗口大小
 let timeout = null
@@ -41,6 +46,16 @@ onMounted(() => {
 </script>
 
 <style lang="less">
+.html {
+  min-height: 30vh;
+  overflow-y: auto;
+
+  img {
+    max-width: 100% !important;
+    float: none !important;
+  }
+}
+
 html,
 body {
   margin: 0;
