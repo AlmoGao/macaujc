@@ -5,7 +5,8 @@
         <Top />
 
         <div class="tabs">
-            <div class="tab" v-for="i in 4" @click="changeTab(i)" :class="{ 'active_tab': active == i }">{{ nameMap[i]
+            <div class="tab" v-for="i in 4" @click="changeTab(i)" :class="{ 'active_tab': active == i }"
+                v-show="nameMap[i]">{{ nameMap[i]
                 }}</div>
         </div>
 
@@ -106,8 +107,8 @@ import { showToast } from "vant"
 const active = ref(1)
 const nameMap = ref({
     1: '新澳门六合彩',
-    2: '澳门六合彩',
-    3: '香港六合彩',
+    // 2: '澳门六合彩',
+    // 3: '香港六合彩',
     4: '新彩',
 })
 const changeTab = i => {

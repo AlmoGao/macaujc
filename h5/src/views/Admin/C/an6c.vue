@@ -3,7 +3,9 @@
     <div class="bb">
         <div class="title" style="display: flex;align-items: center;justify-content: space-between;">
             <span>新澳门六合彩</span>
+            <div style="flex: 1"></div>
             <Button type="danger" size="small" @click="openG">手动开奖</Button>
+            <Button style="margin-left:20px" type="success" size="small" @click="openLive">本期直播地址设置</Button>
         </div>
         <div class="table">
             <div class="tr th">
@@ -24,6 +26,8 @@
             </div>
         </div>
     </div>
+
+    <!-- 设置直播地址 -->
     <Dialog width="400" v-model:show="show" title="直播地址" show-cancel-button @confirm="confirm">
         <div style="border:1px solid #e5e5e5;margin:20px;">
             <Field v-model="live" label="" placeholder="请输入直播地址" />
@@ -43,6 +47,17 @@
             <br />
             <Field style="border:1px solid #e5e5e5;" v-model="openN" label=""
                 placeholder="请输入开奖号码 如：01,02,03,04,05,06,07" />
+        </div>
+    </Dialog>
+
+    <!-- 设置本期直播地址 -->
+    <Dialog width="500" v-model:show="showLive" title="本期直播地址" show-cancel-button @confirm="confirmLive">
+        <div style="padding: 20px;">
+            <br />
+            <div style="font-size: 18px;">第 <b>{{ currG.expect }}</b> 期
+            </div>
+            <br />
+            <Field style="border:1px solid #e5e5e5;" v-model="liveStr" label="" placeholder="请输入直播地址" />
         </div>
     </Dialog>
 </template>
@@ -103,7 +118,6 @@ const openN = ref('')
 const openG = () => {
     showG.value = true
     api._macaujc2().then(res => {
-        console.error(res)
         if (res && res[0]) {
             currG.value = res[0]
         }
@@ -150,6 +164,28 @@ const getOpenTime = t => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+
+// 设置本期直播地址
+const showLive = ref(false)
+const liveStr = ref('')
+const openLive = () => {
+    showLive.value = true
+    api._macaujc2().then(res => {
+        console.error(res)
+        if (res && res[0]) {
+            currG.value = res[0]
+        }
+    })
+}
+const confirmLive = () => {
+    api._updateLives({
+        key: 'macaujc2_' + currG.value.expect,
+        value: liveStr.value
+    }).then(res => {
+        showToast('设置成功')
+        getLives()
+    })
+}
 </script>
 
 <style lang="less" scoped>

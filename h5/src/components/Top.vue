@@ -121,7 +121,7 @@
                     </g>
                 </g>
             </svg>
-            <span>联系我们</span>
+            <span>高手帖专区</span>
         </div>
     </div>
 </template>

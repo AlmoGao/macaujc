@@ -4,19 +4,43 @@
         <img class="logo" src="@/assets/macaujc.png" alt="logo">
         <Top />
         <div class="us">
-            <div class="title">联系我们</div>
-            <div class="subtitle">彩种上架、广告业务、反馈BUG、投诉建议、联系澳门六合彩官方邮件。24小时内可以取得回复。</div>
-            <img class="email" src="@/assets/email.png" alt="email">
-            <div>E-mail: server@macaujc.com</div>
+            <div class="item" v-for="(item, i) in list" :key="i" @click="clickItem(item)">
+                <span>{{ item.title }}</span>
+                <Icon style="margin-left: 20px" name="arrow" />
+            </div>
         </div>
     </div>
+
+    <!-- 新增 -->
+    <Dialog width="80%" v-model:show="show" :title="title" :show-cancel-button="false">
+        <div style="padding: 20px;max-height: 70vh;overflow-y: auto;">
+            <h2>{{ currItem.title }}</h2>
+            <br />
+            <div class="html" v-html="currItem.content"></div>
+        </div>
+    </Dialog>
 </template>
 
 
 <script setup>
 import Top from "@/components/Top.vue"
+import api from "@/api/index"
+import store from "@/store"
+import { computed, ref } from "vue"
+import { Icon, Dialog } from 'vant'
 
 
+const show = ref(false)
+const currItem = ref()
+const clickItem = item => {
+    currItem.value = item
+    show.value = true
+}
+
+const list = computed(() => store.state.cheats || [])
+api._cheats().then(res => {
+    store.commit('setCheats', (res || []).reverse())
+})
 </script>
 
 <style lang="less" scoped>
@@ -29,21 +53,25 @@ import Top from "@/components/Top.vue"
 
     .us {
         padding: 4rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
 
-        .title {
-            font-size: 22px;
-            margin-bottom: 4rem;
+        .item {
+            font-size: 20px;
+            padding: 1.6rem 2rem 1.6rem 0;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+    }
+}
 
-        .email {
-            margin: 8rem 0 2rem 0;
-            width: 10rem;
-            height: 10rem;
-        }
+.html {
+    min-height: 30vh;
+    overflow-y: auto;
+
+    img {
+        max-width: 100% !important;
     }
 }
 </style>

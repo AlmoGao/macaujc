@@ -61,6 +61,36 @@ class HttpService {
       method: "get",
     });
   }
+
+
+  _cheats() {
+    // 获取攻略
+    return http("/api/cheats", {
+      method: "get",
+    });
+  }
+  _createCheat(data) {
+    // 新增攻略
+    return http("/api/createCheat", {
+      method: "post",
+      data,
+    });
+  }
+  _updateCheat(data) {
+    // 修改攻略
+    return http("/api/updateCheat", {
+      method: "post",
+      data,
+    });
+  }
+  _deleteCheat(data) {
+    // 删除攻略
+    return http("/api/deleteCheat", {
+      method: "post",
+      data,
+    });
+  }
+
   _updateMacaujc2Code(data) {
     // 登录
     return http("/api/updateMacaujc2Code", {

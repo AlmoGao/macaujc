@@ -20,6 +20,8 @@ export default createStore({
     // 新彩
     plat: {},
     platHis: [],
+    // 帖子
+    cheats: [],
   },
   mutations: {
     setToken(state, val) {
@@ -52,6 +54,9 @@ export default createStore({
     setPlat(state, val) {
       state.platHis = val
       state.plat = val[0]
+    },
+    setCheats(state, val) {
+      state.cheats = val
     },
   },
   actions: {

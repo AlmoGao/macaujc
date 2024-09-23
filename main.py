@@ -69,6 +69,11 @@ def init_db():
         openCode TEXT NOT NULL,
         openTime TEXT NOT NULL
     )''')
+    conn.execute('''CREATE TABLE IF NOT EXISTS cheats (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL
+    )''')
     conn.commit()
     conn.close()
 
@@ -553,6 +558,90 @@ async def update_plat(request: PlatUpdateRequest, token: str = Depends(oauth2_sc
     conn.close()  # 关闭连接
 
     return {"message": "openCode updated successfully"}
+
+
+
+# 攻略
+# Model 定义
+class CheatModel(BaseModel):
+    title: str
+    content: str
+
+class UpdateCheatModel(BaseModel):
+    id: int
+    title: str
+    content: str
+# 新增 Cheat
+@app.post("/api/createCheat")
+async def create_cheat(cheat: CheatModel, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO cheats (title, content) 
+        VALUES (:title, :content)
+    ''', {'title': cheat.title, 'content': cheat.content})
+    conn.commit()
+    conn.close()
+    return {"code": 200, "message": "Cheat created successfully"}
+
+# 获取所有 Cheats
+@app.get("/api/cheats")
+async def get_cheats():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM cheats")
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+# 修改 Cheat
+@app.post("/api/updateCheat")
+async def update_cheat(update_data: UpdateCheatModel, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE cheats 
+        SET title = :title, content = :content 
+        WHERE id = :id
+    ''', {'title': update_data.title, 'content': update_data.content, 'id': update_data.id})
+    conn.commit()
+    conn.close()
+    return {"code": 200, "message": "Cheat updated successfully"}
+
+# 删除 Cheat
+class DeleteCheatModel(BaseModel):
+    id: int
+# 删除 Cheat
+@app.post("/api/deleteCheat")
+async def delete_cheat(delete_data: DeleteCheatModel, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM cheats WHERE id = ?', (delete_data.id,))
+    conn.commit()
+    conn.close()
+    return {"code": 200, "message": "Cheat deleted successfully"}
+
 
 
 # 使用 schedule 定义每天的 21:33:00 和 22:33:00 执行任务

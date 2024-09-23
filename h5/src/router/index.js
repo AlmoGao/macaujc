@@ -67,6 +67,11 @@ const routes = [
         name: 'a6c3',
         component: () => import('../views/Admin/C/a6c3.vue')
       },
+      { // 攻略
+        path: '/acheats',
+        name: 'acheats',
+        component: () => import('../views/Admin/C/cheats.vue')
+      },
     ]
   },
   {

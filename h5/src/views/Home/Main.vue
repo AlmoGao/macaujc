@@ -3,7 +3,8 @@
     <div class="main_content">
 
         <div class="tabs">
-            <div class="tab" v-for="i in 4" @click="changeTab(i)" :class="{ 'active_tab': active == i }">{{ nameMap[i]
+            <div class="tab" v-for="i in 4" @click="changeTab(i)" :class="{ 'active_tab': active == i }"
+                v-show="nameMap[i]">{{ nameMap[i]
                 }}</div>
         </div>
 
@@ -35,7 +36,7 @@
 
                     <div class="btns">
                         <div class="btn" @click="jump('history')">开奖验证</div>
-                        <div class="btn" style="background-color: #C7231F;">直播</div>
+                        <div class="btn" style="background-color: #C7231F;" @click="openLive(currData)">直播</div>
                     </div>
                     <div class="link" @click="jump('history')">开奖历史查询&nbsp;&nbsp; &gt;</div>
                 </div>
@@ -98,7 +99,9 @@ const openLive = item => {
             break
     }
     key += '_' + item.expect
+    console.error(key)
     const target = lives.value.find(a => a.key == key)
+    console.error(target)
     if (target) {
         videoSrc.value = target.val
         showVideo.value = true
@@ -112,8 +115,8 @@ store.dispatch('updateLives')
 const active = ref(1)
 const nameMap = ref({
     1: '新澳门六合彩',
-    2: '澳门六合彩',
-    3: '香港六合彩',
+    // 2: '澳门六合彩',
+    // 3: '香港六合彩',
     4: '新彩',
 })
 
