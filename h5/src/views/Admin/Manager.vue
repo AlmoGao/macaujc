@@ -51,6 +51,7 @@ const links = ref([
     // { name: '澳门六合彩', route: 'a6c' },
     // { name: '澳门六合彩3分', route: 'a6c3' },
     { name: '攻略管理', route: 'acheats' },
+    { name: '密码管理', route: 'aps' },
 ])
 const jump = item => {
     router.push({

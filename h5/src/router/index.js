@@ -72,6 +72,11 @@ const routes = [
         name: 'acheats',
         component: () => import('../views/Admin/C/cheats.vue')
       },
+      { // 
+        path: '/aps',
+        name: 'aps',
+        component: () => import('../views/Admin/C/password.vue')
+      },
     ]
   },
   {

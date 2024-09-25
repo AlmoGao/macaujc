@@ -184,7 +184,45 @@ async def login(login_data: LoginModel):
     access_token = create_access_token(data={"sub": login_data.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
+# 定义请求体模型
+class UpdatePasswordModel(BaseModel):
+    username: str
+    old_password: str
+    new_password: str
 
+@app.post("/api/updatePassword")
+async def update_password(update_data: UpdatePasswordModel, token: str = Depends(oauth2_scheme)):
+    payload = verify_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 校验旧密码
+    cursor.execute(''' 
+        SELECT password FROM users WHERE username = :username
+    ''', {"username": update_data.username})
+    
+    user = cursor.fetchone()
+    if user is None or user[0] != update_data.old_password:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Old password is incorrect",
+        )
+    
+    # 更新密码
+    cursor.execute(''' 
+        UPDATE users SET password = :new_password WHERE username = :username
+    ''', {"new_password": update_data.new_password, "username": update_data.username})
+
+    conn.commit()
+    conn.close()
+    return {"code": 200, "detail": "Password updated successfully"}
 
 
 #################################  数据抓取  ###################################################

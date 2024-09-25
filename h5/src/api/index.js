@@ -62,7 +62,13 @@ class HttpService {
     });
   }
 
-
+  _updatePassword(data) {
+    // 修改密
+    return http("/api/updatePassword", {
+      method: "post",
+      data,
+    });
+  }
   _cheats() {
     // 获取攻略
     return http("/api/cheats", {
