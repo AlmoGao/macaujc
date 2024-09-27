@@ -522,6 +522,10 @@ const getNums = arr => {
         .content {
             padding: 2rem
         }
+
+        .logo {
+            margin-left: 4rem
+        }
     }
 }
 </style>

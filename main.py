@@ -697,9 +697,9 @@ async def run_schedule():
 async def startup():
     init_db()
     print('同步数据')
-    fetch_data()
+    # fetch_data()
     # 异步任务启动调度器
-    asyncio.create_task(run_schedule())
+    # asyncio.create_task(run_schedule())
     print('-- 启动定时任务 --')
     # 启动时间
     current_time = datetime.now()

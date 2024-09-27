@@ -1,7 +1,7 @@
 <!-- 号码组合 -->
 <template>
     <div class="nums">
-        <div class="num" :class="['num_' + i]" v-for="(num, i) in currCode" :key="num">
+        <div class="num" :class="['num_' + i]" v-for="(num, i) in showCode" :key="num">
             <Num :num="num" />
             <div class="num_text">{{ getAniText(num) }}</div>
         </div>
@@ -11,13 +11,32 @@
 <script setup>
 import Num from "./Num.vue"
 import { getAniText } from "@/views/Home/numMap"
+import { ref, computed } from "vue"
 
 const props = defineProps({
     currCode: {
         type: Array,
         default: () => []
+    },
+    openning: {
+        type: Boolean,
+        default: false
     }
 })
+
+const showCodes = ref(['--', '--', '--', '--', '--', '--', '--'])
+const showCode = computed(() => {
+    if (props.openning) return showCodes.value
+    return props.currCode
+})
+
+if (props.openning) {
+    props.currCode.forEach((item, i) => {
+        setTimeout(() => {
+            showCodes.value[i] = item
+        }, (i + 1) * 3000)
+    })
+}
 </script>
 
 <style lang="less" scoped>
@@ -58,7 +77,7 @@ const props = defineProps({
 @media screen and (max-width: 600px) {
     .nums {
         .num_text {
-            font-size: 4rem;
+            font-size: 5rem;
         }
     }
 }

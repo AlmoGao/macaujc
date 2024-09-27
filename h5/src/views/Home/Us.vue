@@ -65,4 +65,12 @@ api._cheats().then(res => {
         }
     }
 }
+
+@media screen and (max-width: 600px) {
+    .page-us {
+        .logo {
+            margin-left: 4rem;
+        }
+    }
+}
 </style>

@@ -23,4 +23,12 @@ import Main from "./Main.vue"
         height: 8rem;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .page-history {
+        .logo {
+            margin-left: 4rem;
+        }
+    }
+}
 </style>

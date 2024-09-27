@@ -52,4 +52,12 @@ import Main from "./Main.vue"
   }
 
 }
+
+@media screen and (max-width: 600px) {
+  .page-home {
+    .logo {
+      margin-left: 4rem;
+    }
+  }
+}
 </style>

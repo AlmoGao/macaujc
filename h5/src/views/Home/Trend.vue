@@ -412,4 +412,14 @@ onMounted(() => {
         border-bottom: 10px solid #ECECEC
     }
 }
+
+@media screen and (max-width: 600px) {
+    .page-tend {
+        padding: 2rem;
+
+        .logo {
+            margin-left: 2rem;
+        }
+    }
+}
 </style>

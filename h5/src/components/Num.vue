@@ -86,8 +86,8 @@ const numMap = ref({
 
 @media screen and (max-width: 600px) {
     .num {
-        width: 8rem;
-        height: 8rem;
+        width: 10rem;
+        height: 10rem;
         font-size: 4rem;
     }
 }

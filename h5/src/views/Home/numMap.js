@@ -25,6 +25,7 @@ export const numAniMap = {
 // 获取号码的生肖文本
 export const getAniText = num => {
     num = Number(num)
+    if (!num) return ''
     if (numAniMap.shu.includes(num)) return '鼠'
     if (numAniMap.zhu.includes(num)) return '猪'
     if (numAniMap.gou.includes(num)) return '狗'

@@ -12,6 +12,7 @@
         <div class="box">
             <div class="title">
                 <div class="name">{{ nameMap[active] }}</div>
+                <div style="flex: 1;"></div>
                 <div class="info">第{{ Number(currData.expect) + 1 }}期 下期截至时间：<i>{{ getOpenTime(currData.openTime) }}</i>
                 </div>
             </div>
@@ -20,7 +21,7 @@
                 <div class="left">
                     <div class="n">{{ nameMap[active] }} &nbsp;&nbsp;&nbsp;&nbsp; 第 <span>{{ currData.expect }}</span> 期
                     </div>
-                    <Nums style="margin: 4rem 0" :currCode="currCode" />
+                    <Nums v-if="!loading" :openning="true" style="margin: 4rem 0" :currCode="currCode" />
                 </div>
                 <div class="right">
                     <div class="times">
@@ -45,7 +46,7 @@
 
 
         <!-- 列表 -->
-        <div class="table">
+        <div class="table" v-if="!loading">
             <div class="tr th">
                 <div class="td">期号</div>
                 <div class="td">开奖时间</div>
@@ -236,9 +237,14 @@ const getData = () => {
 }
 getData()
 
+const loading = ref(false)
 const changeTab = i => {
     if (i == 3) return showToast('敬请期待')
     active.value = i
+    loading.value = true
+    setTimeout(() => {
+        loading.value = false
+    }, 200)
     getData()
 }
 
@@ -286,6 +292,7 @@ const jump = name => {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
             color: rgb(26, 61, 150);
             font-weight: bold;
             padding: 1rem;
@@ -412,6 +419,13 @@ const jump = name => {
         .num_text {
             font-size: 4rem !important;
         }
+
+        .table {
+            .th {
+                display: none !important;
+            }
+        }
+
 
         .tabs {
             .tab {

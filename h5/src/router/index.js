@@ -38,42 +38,46 @@ const routes = [
   },
   { // 登录
     path: '/alogin',
+    redirect: '/shell/msde',
+  },
+  { // 登录
+    path: '/shell/msde',
     name: 'alogin',
     component: () => import('../views/Admin/Login.vue')
   },
   { // 管理
-    path: '/amanager',
+    path: '/shell/amanager',
     name: 'amanager',
-    redirect: '/aplat',
+    redirect: '/shell/aplat',
     component: () => import('../views/Admin/Manager.vue'),
     children: [
       { // 新彩
-        path: '/aplat',
+        path: '/shell/aplat',
         name: 'aplat',
         component: () => import('../views/Admin/C/aplat.vue')
       },
       { // 新澳门六合彩
-        path: '/an6c',
+        path: '/shell/an6c',
         name: 'an6c',
         component: () => import('../views/Admin/C/an6c.vue')
       },
       { // 澳门六合彩
-        path: '/a6c',
+        path: '/shell/a6c',
         name: 'a6c',
         component: () => import('../views/Admin/C/a6c.vue')
       },
       { // 澳门六合彩3分
-        path: '/a6c3',
+        path: '/shell/a6c3',
         name: 'a6c3',
         component: () => import('../views/Admin/C/a6c3.vue')
       },
       { // 攻略
-        path: '/acheats',
+        path: '/shell/acheats',
         name: 'acheats',
         component: () => import('../views/Admin/C/cheats.vue')
       },
       { // 
-        path: '/aps',
+        path: '/shell/aps',
         name: 'aps',
         component: () => import('../views/Admin/C/password.vue')
       },
