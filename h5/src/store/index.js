@@ -17,7 +17,7 @@ export default createStore({
     // 3分
     macaujc3: {},
     macaujc3his: [],
-    // 新彩
+    // 星彩
     plat: {},
     platHis: [],
     // 帖子
@@ -106,7 +106,7 @@ export default createStore({
         }
       })
     },
-    updatePlat({ commit }) { // 新彩
+    updatePlat({ commit }) { // 星彩
       api._plat().then(res => {
         if (res) {
           commit('setPlat', res)

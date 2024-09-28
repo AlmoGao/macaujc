@@ -526,7 +526,7 @@ async def get_macaujc3his():
         return None
 
 
-# 获取新彩
+# 获取星彩
 # 获取所有数据
 @app.get("/api/platAll")
 async def get_platAll():

@@ -109,7 +109,7 @@ const nameMap = ref({
     1: '新澳门六合彩',
     // 2: '澳门六合彩',
     // 3: '香港六合彩',
-    4: '新彩',
+    4: '星彩',
 })
 const changeTab = i => {
     if (i == 3) return showToast('敬请期待')

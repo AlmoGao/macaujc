@@ -1,7 +1,7 @@
-<!-- 新彩 -->
+<!-- 星彩 -->
 <template>
     <div class="bb">
-        <div class="title">新彩</div>
+        <div class="title">星彩</div>
         <div class="table">
             <div class="tr th">
                 <div class="td">期号</div>

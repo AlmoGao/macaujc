@@ -51,7 +51,7 @@ const routes = [
     redirect: '/shell/aplat',
     component: () => import('../views/Admin/Manager.vue'),
     children: [
-      { // 新彩
+      { // 星彩
         path: '/shell/aplat',
         name: 'aplat',
         component: () => import('../views/Admin/C/aplat.vue')
